@@ -51,6 +51,11 @@ public:
    */
   Tree (const MeshBase& m, const unsigned int target_bin_size, Trees::BuildType bt=Trees::NODES);
 
+  // /**
+  //  * Constructor. Requires a mesh and the target bin size. Optionally takes the build method.
+  //  */
+  // Tree (const std::vector<Point> &pts, const unsigned int target_bin_size);
+
   /**
    * Copy-constructor.
    */
