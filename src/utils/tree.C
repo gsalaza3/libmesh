@@ -86,8 +86,8 @@ Tree<N>::Tree (const std::vector<Point> &pts,
 	       const unsigned int target_bin_size) :
 //TreeBase(m),       ..........................   /// do I need this????
 //root(m,target_bin_size),
-  build_type(Trees::NODES),
-  root(target_bin_size)
+  root(target_bin_size),
+  build_type(Trees::NODES)
 {
   // Set the root node bounding box equal to the bounding
   // box for the entire domain.

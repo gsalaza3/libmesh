@@ -246,6 +246,7 @@ inline
 TreeNode<N>::TreeNode (const unsigned int tbs,
 		       const MeshBase *m,
 		       const TreeNode<N>* p) :
+  mesh           (m),
   tgt_bin_size   (tbs),
   parent         (p),
   contains_ifems (false)
@@ -255,8 +256,8 @@ TreeNode<N>::TreeNode (const unsigned int tbs,
   libmesh_assert (this->active());
 
   // Reserve space for the nodes & elements
-  nodes.reserve    (tgt_bin_size);
-  elements.reserve (tgt_bin_size);
+  nodes.reserve (tgt_bin_size);
+  if (mesh) elements.reserve (tgt_bin_size);
 }
 
 
