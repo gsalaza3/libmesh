@@ -41,17 +41,18 @@ Tree<N>::Tree (const MeshBase& m,
   root(m,target_bin_size),
   build_type(bt)
 {
+  libmesh_assert (mesh != NULL);
+
   // Set the root node bounding box equal to the bounding
   // box for the entire domain.
-  root.set_bounding_box (MeshTools::bounding_box(mesh));
-
+  root.set_bounding_box (MeshTools::bounding_box(*mesh));
 
   if (build_type == Trees::NODES)
     {
       // Add all the nodes to the root node.  It will
       // automagically build the tree for us.
-      MeshBase::const_node_iterator       it  = mesh.nodes_begin();
-      const MeshBase::const_node_iterator end = mesh.nodes_end();
+      MeshBase::const_node_iterator       it  = mesh->nodes_begin();
+      const MeshBase::const_node_iterator end = mesh->nodes_end();
 
       for (; it != end; ++it)
 	root.insert (*it);
@@ -61,7 +62,7 @@ Tree<N>::Tree (const MeshBase& m,
       // convert between the two.
       std::vector<std::vector<const Elem*> > nodes_to_elem;
 
-      MeshTools::build_nodes_to_elem_map (mesh, nodes_to_elem);
+      MeshTools::build_nodes_to_elem_map (*mesh, nodes_to_elem);
       root.transform_nodes_to_elements (nodes_to_elem);
     }
 
@@ -69,13 +70,49 @@ Tree<N>::Tree (const MeshBase& m,
     {
       // Add all active elements to the root node.  It will
       // automatically build the tree for us.
-      MeshBase::const_element_iterator       it  = mesh.active_elements_begin();
-      const MeshBase::const_element_iterator end = mesh.active_elements_end();
+      MeshBase::const_element_iterator       it  = mesh->active_elements_begin();
+      const MeshBase::const_element_iterator end = mesh->active_elements_end();
 
 
       for (; it != end; ++it)
 	root.insert (*it);
     }
+}
+
+
+// constructor
+template <unsigned int N>
+Tree<N>::Tree (const std::vector<Point> &pts,
+	       const unsigned int target_bin_size) :
+//TreeBase(m),       ..........................   /// do I need this????
+//root(m,target_bin_size),
+  build_type(Trees::NODES),
+  root(target_bin_size)
+{
+  // Set the root node bounding box equal to the bounding
+  // box for the entire domain.
+//  root.set_bounding_box (MeshTools::bounding_box(pts));
+
+  // Gio.. Add loop to manually compute bounding box for now...
+       //(while looping) turn all points into nodes
+
+  //Manually set it as:
+  //create bbox object
+  //declare:  const std::pair <Point1, Point2>& bbox
+  //populate it with Point1 and Point2
+  //root.set_bounding_box (bbox) ------> should work...right???
+
+
+  // Add all the nodes to the root node.  It will
+  // automagically build the tree for us.
+//MeshBase::const_node_iterator       it  = mesh.nodes_begin();
+//const MeshBase::const_node_iterator end = mesh.nodes_end();
+
+//for (; it != end; ++it)
+//  root.insert (*it);
+
+  // Now the tree contains the nodes.
+
 }
 
 

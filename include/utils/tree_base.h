@@ -67,6 +67,13 @@ protected:
   TreeBase (const MeshBase& m);
 
 
+  /**
+   * Constructor.  Protected.
+   */
+  explicit
+  TreeBase ();
+
+
 public:
 
   /**
@@ -97,10 +104,10 @@ public:
 protected:
 
   /**
-   * Constant reference to a mesh.  Declared
+   * Constant pointer to a mesh.  Declared
    * at construction.
    */
-  const MeshBase& mesh;
+  const MeshBase *mesh;
 
 };
 
@@ -111,9 +118,13 @@ protected:
 // constructor
 inline
 TreeBase::TreeBase (const MeshBase& m) :
-  mesh(m)
-{
-}
+  mesh(&m)
+{}
+
+inline
+TreeBase::TreeBase () :
+  mesh(NULL)
+{}
 
 } // namespace libMesh
 

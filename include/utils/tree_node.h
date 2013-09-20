@@ -57,6 +57,17 @@ public:
 	    const unsigned int tbs,
 	    const TreeNode<N> *p = NULL);
 
+  // Added by Gio 9/12/13
+  /**
+   * Constructor.  Takes a pointer to this node's
+   * parent.  The pointer should only be NULL
+   * for the top-level (root) node.
+   */
+  TreeNode (const unsigned int tbs,
+            const MeshBase *m = NULL,
+	    const TreeNode<N> *p = NULL);
+
+
   /**
    * Destructor.  Deletes all children, if any.  Thus
    * to delete a tree it is sufficient to explicitly
@@ -161,7 +172,7 @@ private:
   /**
    * Reference to the mesh.
    */
-  const MeshBase& mesh;
+  const MeshBase *mesh;
 
   /**
    * The maximum number of things we should store before
@@ -215,7 +226,26 @@ inline
 TreeNode<N>::TreeNode (const MeshBase& m,
 		       const unsigned int tbs,
 		       const TreeNode<N>* p) :
-  mesh           (m),
+  mesh           (&m),
+  tgt_bin_size   (tbs),
+  parent         (p),
+  contains_ifems (false)
+{
+  // libmesh_assert our children are empty, thus we are active.
+  libmesh_assert (children.empty());
+  libmesh_assert (this->active());
+
+  // Reserve space for the nodes & elements
+  nodes.reserve    (tgt_bin_size);
+  elements.reserve (tgt_bin_size);
+}
+
+
+template <unsigned int N>
+inline
+TreeNode<N>::TreeNode (const unsigned int tbs,
+		       const MeshBase *m,
+		       const TreeNode<N>* p) :
   tgt_bin_size   (tbs),
   parent         (p),
   contains_ifems (false)

@@ -436,6 +436,29 @@ MeshTools::bounding_box(const MeshBase& mesh)
   return find_bbox.bbox();
 }
 
+  // Added by Gio 9/12/13
+//MeshTools::bounding_box(const std::vector<Point> &pts)
+//{
+//  // This function must be run on all processors at once
+////libmesh_parallel_only(mesh.comm());
+//
+//  FindBBox find_bbox;
+//
+//  Threads::parallel_reduce (ConstNodeRange (mesh.local_nodes_begin(),
+//					    mesh.local_nodes_end()),
+//			    find_bbox);
+//
+//  // and the unpartitioned nodes
+//  Threads::parallel_reduce (ConstNodeRange (mesh.pid_nodes_begin(DofObject::invalid_processor_id),
+//					    mesh.pid_nodes_end(DofObject::invalid_processor_id)),
+//			    find_bbox);
+//
+//  // Compare the bounding boxes across processors
+//  mesh.comm().min(find_bbox.min());
+//  mesh.comm().max(find_bbox.max());
+//
+//  return find_bbox.bbox();
+//}
 
 
 Sphere

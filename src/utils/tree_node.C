@@ -35,7 +35,7 @@ template <unsigned int N>
 void TreeNode<N>::insert (const Node* nd)
 {
   libmesh_assert(nd);
-  libmesh_assert_less (nd->id(), mesh.n_nodes());
+  libmesh_assert_less (nd->id(), mesh->n_nodes());
 
   // Return if we don't bound the node
   if (!this->bounds_node(nd))
@@ -147,7 +147,7 @@ void TreeNode<N>::refine ()
   for (unsigned int c=0; c<N; c++)
     {
       // Create the child and set its bounding box.
-      children[c] = new TreeNode<N> (mesh, tgt_bin_size, this);
+      children[c] = new TreeNode<N> (tgt_bin_size, mesh, this);
       children[c]->set_bounding_box(this->create_bounding_box(c));
 
       // Pass off our nodes to our children
@@ -471,7 +471,7 @@ void TreeNode<N>::transform_nodes_to_elements (std::vector<std::vector<const Ele
 	  // with the connected elements
 	  const dof_id_type node_number = nodes[n]->id();
 
-	  libmesh_assert_less (node_number, mesh.n_nodes());
+	  libmesh_assert_less (node_number, mesh->n_nodes());
 	  libmesh_assert_less (node_number, nodes_to_elem.size());
 
 	  for (unsigned int e=0; e<nodes_to_elem[node_number].size(); e++)
